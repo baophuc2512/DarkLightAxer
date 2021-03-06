@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.min.js"></script>
+</head>
+
+<body>
+
+    <script>
+        var config = {
+            type: Phaser.AUTO,
+            width: 1000,
+            height: 600,
+            backgroundColor: "#ffffff",
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: {
+                        y: 1000
+                    },
+                    enableBody: true,
+                }
+            },
+            scene: {
+                preload,
+                create,
+                update,
+            }
+        };
+
+        var game = new Phaser.Game(config);
+        var keyMove = 1; // 0: pause, 1: play
+
+        function preload() {
+            this.load.spritesheet('dude', 'dude.png', {
+                frameWidth: 32,
+                frameHeight: 48
+            });
+            this.load.spritesheet('slime', 'topdown_shooter/topdown_shooter/monster/slime1_front.png', {
+                frameWidth: 16,
+                frameHeight: 16
+            });
+            this.load.image('platform', 'https://s3.amazonaws.com/codecademy-content/courses/learn-phaser/Cave+Crisis/platform.png');
+            this.load.image('sky', 'Final/Assets/Background_2.png');
+            this.load.image('bg1', 'https://s3.amazonaws.com/codecademy-content/courses/learn-phaser/Codey+Tundra/trees.png');
+            this.load.image('bg2', 'https://s3.amazonaws.com/codecademy-content/courses/learn-phaser/Codey+Tundra/snowdunes.png');
+        }
+
+        function create() {
+            //BackGround
+            this.add.image(0, 0, 'sky').setOrigin(0, 0).setScale(5);
+            this.add.image(0, 0, 'bg1').setOrigin(0, 0);
+            this.add.image(0, 0, 'bg2').setOrigin(0, 0);
+
+
+            //Platform
+            platform = this.physics.add.staticGroup();
+            platform.create(100, 575, 'platform');
+            platform.create(300, 575, 'platform');
+            platform.create(500, 575, 'platform');
+            platform.create(700, 575, 'platform');
+            platform.create(900, 575, 'platform');
+
+            //Player
+            player = this.physics.add.sprite(50, 100, 'dude');
+            player.setBounce(0.2);
+
+            this.physics.add.collider(player, platform);
+            player.setCollideWorldBounds(true);
+            this.physics.world.setBounds(0, 0, 1000, 600);
+
+            //Enemies
+            slimes = this.physics.add.sprite(300, 500, 'slime');
+            this.physics.add.collider(slimes, platform);
+
+            this.physics.add.overlap(slimes, player, () => {
+                this.add.text(150, 50, 'Game Over...\n  Click to play again.', {
+                    fontFamily: 'Arial',
+                    fontSize: 36,
+                    color: '#f00ff0'
+                });
+                this.physics.pause();
+                this.anims.pauseAll();
+                this.input.on('pointerup', () => {
+                    this.scene.restart();
+                    this.anims.resumeAll();
+                    keyMove = 1;
+                });
+                keyMove = 0;
+            });
+                        
+            slimemove = this.tweens.add({
+                targets: slimes,
+                x: 200,
+//                y: 400,
+                ease: 'Linear',
+                duration: 3000,
+                repeat: -1,
+//                yoyo: true
+            });
+            
+            slimemove.play();
+//            slimemove.stop();
+            // create animations
+            this.anims.create({
+                key: 'move',
+                frames: this.anims.generateFrameNumbers('dude', {
+                    start: 0,
+                    end: 3
+                }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: 'idle',
+                frames: [{
+                    key: 'dude',
+                    frame: 4
+                }],
+                frameRate: 20
+            });
+
+            cursors = this.input.keyboard.createCursorKeys();
+        }
+
+        function update() {
+            if (keyMove === 1) {
+                if (cursors.left.isDown) {
+                    player.setVelocityX(-200);
+                    player.anims.play('move', true);
+                    player.flipX = false;
+                } else if (cursors.right.isDown) {
+                    player.setVelocityX(200);
+                    player.anims.play('move', true);
+                    player.flipX = true;
+                } else {
+                    player.setVelocityX(0);
+                    player.anims.play('idle');
+                }
+
+                // Jump
+                if ((cursors.space.isDown || cursors.up.isDown) && player.body.touching.down) {
+                    player.setVelocityY(-300);
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>

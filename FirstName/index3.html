@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.min.js"></script>
+</head>
+
+<body>
+
+    <script>
+        var config = {
+            type: Phaser.AUTO,
+            width: 1000,
+            height: 600,
+            backgroundColor: "#ffffff",
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: {
+                        y: 1000
+                    },
+                    enableBody: true,
+                }
+            },
+            scene: {
+                preload,
+                create,
+//                update,
+            }
+        };
+
+        var game = new Phaser.Game(config);
+
+        function preload() {
+            this.load.image('block', 'topdown_shooter/topdown_shooter/towers/cannon/1_down.png');
+
+        }
+
+        function create() {
+            
+            var image = this.physics.add.sprite(100, 300, 'block');
+            
+            image.setCollideWorldBounds(true);
+
+            var tween = this.tweens.add({
+                targets: image,
+                x: 700,
+                duration: 3000,
+                ease: 'Linear',
+                repeat: -1,
+                yoyo: true
+            });
+        }
+    </script>
+
+</body>
+
+</html>
