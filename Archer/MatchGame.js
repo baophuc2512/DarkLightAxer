@@ -6,7 +6,7 @@ class MatchGame extends Phaser.Scene {
     preload() {
         this.load.image('player','https://content.codecademy.com/courses/learn-phaser/physics/codey.png');
         this.load.image('platform', 'https://content.codecademy.com/courses/learn-phaser/physics/platform.png');
-        this.load.image('arrow','Picture & Anim/Arrow.png');
+        this.load.image('arrow','PictureAnim/Arrow.png');
     }
     create() {
         gameState.character = this.physics.add.sprite(100,100,'player');
@@ -39,14 +39,16 @@ class MatchGame extends Phaser.Scene {
             update: function (time, delta) {
                 if (this.type === 'R') {
                     this.x += this.speed * delta;
+                    this.y += -this.speed * delta;
                 } else if (this.type === 'L') {
                     this.x -= this.speed * delta;
+                    this.y -= this.speed * delta;
                 }
 
                 if (this.x > gameState.playerOldX + 2000 || this.x < gameState.playerOldX - 2000) {
                     this.setActive(false);
                     this.setVisible(false);
-                    this.x = 100000;
+                    this.x = 100000; // find function to delete
                 }
             }
         });
@@ -88,9 +90,9 @@ class MatchGame extends Phaser.Scene {
             gameState.keyArrow = 0;
             gameState.arrow = gameState.arrows.get();
             gameState.arrow.setScale(0.08);
-            gameState.arrow.body.setAllowGravity(false);
+            gameState.arrow.body.setAllowGravity(true);
             if (gameState.arrow !== null) {
-                gameState.arrow.body.setAllowGravity(false);
+                gameState.arrow.body.setAllowGravity(true);
 
                 if (gameState.arrow) {
                     gameState.arrow.fire(gameState.character.x, gameState.character.y, 'R');
