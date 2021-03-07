@@ -36,6 +36,8 @@ class MatchGame extends Phaser.Scene {
                 gameState.playerOldY = y;
                 this.setActive(true);
                 this.setVisible(true);
+
+                Client.sendTest();
             },
 
             update: function (time, delta) {
