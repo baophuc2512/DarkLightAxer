@@ -7,6 +7,7 @@ class MatchGame extends Phaser.Scene {
         this.load.image('player','https://content.codecademy.com/courses/learn-phaser/physics/codey.png');
         this.load.image('platform', 'https://content.codecademy.com/courses/learn-phaser/physics/platform.png');
         this.load.image('arrow','PictureAnim/Arrow.png');
+        this.load.image('axe','PictureAnim/Axe.png');
     }
     create() {
         gameState.character = this.physics.add.sprite(100,100,'player');
@@ -24,7 +25,7 @@ class MatchGame extends Phaser.Scene {
             initialize:
 
                 function Bullet(scene) {
-                    Phaser.Physics.Arcade.Image.call(this, scene, 0, 0, 'arrow');
+                    Phaser.Physics.Arcade.Image.call(this, scene, 0, 0, 'axe');
                     this.speed =  Phaser.Math.GetSpeed(400,1);
                 },
 
@@ -94,7 +95,7 @@ class MatchGame extends Phaser.Scene {
             gameState.arrow = gameState.arrows.get();
             gameState.arrow.setScale(0.05);
             gameState.arrow.setVelocityY(1200);
-            gameState.arrow.body.angularVelocity = 60;
+            gameState.arrow.body.angularVelocity = 360 * 2;
             // gameState.arrow.body.setAllowGravity(false);
             if (gameState.arrow !== null) {
                 // gameState.arrow.body.setAllowGravity(false);
