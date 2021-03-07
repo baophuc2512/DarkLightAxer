@@ -1,6 +1,10 @@
 const gameState = {
     widthScreen: 1000,
     heightScreen: 600,
+    speedCharacter: 100,
+    keyArrow: 0,
+    chargeTime: 1000,
+    healthCharacter: 10000,
 };
 
 const config = {
