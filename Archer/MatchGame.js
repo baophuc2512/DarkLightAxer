@@ -32,17 +32,19 @@ class MatchGame extends Phaser.Scene {
                 this.type = type;
                 this.setPosition(x+75, y-5);
                 gameState.playerOldX = x;
+                gameState.playerOldY = y;
                 this.setActive(true);
                 this.setVisible(true);
             },
 
             update: function (time, delta) {
                 if (this.type === 'R') {
-                    this.x += this.speed * delta;
-                    this.y += -this.speed * delta;
+                    let x = this.speed * delta;
+                    this.x += x
+                    this.y += -4*x;
                 } else if (this.type === 'L') {
-                    this.x -= this.speed * delta;
-                    this.y -= this.speed * delta;
+                    // this.x -= this.speed * delta;
+                    // this.y -= this.speed * delta;
                 }
 
                 if (this.x > gameState.playerOldX + 2000 || this.x < gameState.playerOldX - 2000) {
@@ -50,6 +52,7 @@ class MatchGame extends Phaser.Scene {
                     this.setVisible(false);
                     this.x = 100000; // find function to delete
                 }
+                
             }
         });
 
@@ -89,10 +92,11 @@ class MatchGame extends Phaser.Scene {
         if (gameState.cursors.right.isUp && gameState.cursors.left.isUp && gameState.keyArrow == 2) {
             gameState.keyArrow = 0;
             gameState.arrow = gameState.arrows.get();
-            gameState.arrow.setScale(0.08);
-            gameState.arrow.body.setAllowGravity(true);
+            gameState.arrow.setScale(0.05);
+            gameState.arrow.setVelocityY(1200);
+            // gameState.arrow.body.setAllowGravity(false);
             if (gameState.arrow !== null) {
-                gameState.arrow.body.setAllowGravity(true);
+                // gameState.arrow.body.setAllowGravity(false);
 
                 if (gameState.arrow) {
                     gameState.arrow.fire(gameState.character.x, gameState.character.y, 'R');

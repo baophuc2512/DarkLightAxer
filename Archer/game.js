@@ -1,7 +1,7 @@
 const gameState = {
     widthScreen: 1000,
     heightScreen: 600,
-    speedCharacter: 100,
+    speedCharacter: 200,
     keyArrow: 0,
     chargeTime: 1000,
     healthCharacter: 10000,
@@ -15,7 +15,7 @@ const config = {
         physics: {
             default: 'arcade',
             arcade: {
-                gravity: {y: 500},
+                gravity: {y: 300},
                 enableBody: true,
                 debug: false,
             },
