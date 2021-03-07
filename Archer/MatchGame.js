@@ -30,7 +30,7 @@ class MatchGame extends Phaser.Scene {
 
             fire: function (x, y, type) {
                 this.type = type;
-                this.setPosition(x+75, y-5);
+                this.setPosition(x+75, y-2);
                 gameState.playerOldX = x;
                 gameState.playerOldY = y;
                 this.setActive(true);
@@ -40,7 +40,7 @@ class MatchGame extends Phaser.Scene {
             update: function (time, delta) {
                 if (this.type === 'R') {
                     let x = this.speed * delta;
-                    this.x += x
+                    this.x += x - 3;
                     this.y += -4*x;
                 } else if (this.type === 'L') {
                     // this.x -= this.speed * delta;
@@ -94,6 +94,7 @@ class MatchGame extends Phaser.Scene {
             gameState.arrow = gameState.arrows.get();
             gameState.arrow.setScale(0.05);
             gameState.arrow.setVelocityY(1200);
+            gameState.arrow.body.angularVelocity = 60;
             // gameState.arrow.body.setAllowGravity(false);
             if (gameState.arrow !== null) {
                 // gameState.arrow.body.setAllowGravity(false);
