@@ -4,7 +4,11 @@ const gameState = {
     speedCharacter: 200,
     keyArrow: 0,
     chargeTime: 1000,
+
     healthCharacter: 10000,
+    healthCharacter2: 10000,
+
+    takeShootCharac2: 0,
 };
 
 const config = {
