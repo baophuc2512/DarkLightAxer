@@ -46,21 +46,32 @@ io.on('connection', (socket) => {
     };
 
     // send the players object to the new player
-    socket.emit('currentPlayers', players);
+    socket.emit('currentPlayer', socket.id);
     // update all other players of the new player
-    socket.broadcast.emit('newPlayer', players[socket.id]);
+    socket.broadcast.emit('newPlayer', socket.id);
 
     // when a player disconnects, remove them from our players object
     socket.on('disconnect', function () {
-        console.log('user disconnected');
-        // remove this player from our players object
-        delete players[socket.id];
-        // emit a message to all players to remove this player
-        io.emit('disconnect', socket.id);
+        try {
+            console.log('user disconnected');
+            // emit a message to all players to remove this player
+            socket.broadcast.emit('disconnectPlayer', socket.id);
+        } catch (e) {
+            console.log(e);
+        }
     });
 
     socket.on('test', function () {
         console.log('test received');
+    });
+
+    socket.on('move', function (isLeft) {
+        console.log('move received at server', isLeft);
+        socket.broadcast.emit('movePlayer', isLeft, socket.id);
+    });
+
+    socket.on('stop', function () {
+        socket.broadcast.emit('stopPlayer', socket.id);
     });
 });
 

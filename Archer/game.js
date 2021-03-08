@@ -1,4 +1,5 @@
 const gameState = {
+    id: null,
     widthScreen: 1000,
     heightScreen: 600,
     speedCharacter: 200,
@@ -9,6 +10,8 @@ const gameState = {
     healthCharacter2: 10000,
 
     takeShootCharac2: 0,
+
+    isStop: true,
 };
 
 const config = {

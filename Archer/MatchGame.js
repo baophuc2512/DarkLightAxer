@@ -1,4 +1,5 @@
 class MatchGame extends Phaser.Scene {
+    
     constructor(){
         super({ key: "MatchGame"});
     }
@@ -48,8 +49,6 @@ class MatchGame extends Phaser.Scene {
                 gameState.playerOldY = y;
                 this.setActive(true);
                 this.setVisible(true);
-
-                // Client.sendTest();
             },
 
             update: function (time, delta) {
@@ -77,6 +76,7 @@ class MatchGame extends Phaser.Scene {
             maxsize: 1,
             runChildUpdate: true,
         });
+
         //gameState.arrow = gameState.arrows.get();
         //gameState.arrow.body.setAllowGravity(false);
 
@@ -95,20 +95,33 @@ class MatchGame extends Phaser.Scene {
         gameState.healthText.setText(`Health: ${gameState.healthCharacter}`);
         gameState.healthText2.setText(`${gameState.healthCharacter2} :Health`);
         
-        //Move
+        //Move player master
         gameState.cursors = this.input.keyboard.createCursorKeys();
         if (gameState.cursors.left.isDown) {
             gameState.character.setVelocityX(-gameState.speedCharacter);
             gameState.keyArrow = 0;
             clearTimeout(gameState.timeChargeFunction);
-        } else
-        if (gameState.cursors.right.isDown) {
+
+            // Send to client 
+            Client.move(true);
+            gameState.isStop = false;
+        } else if (gameState.cursors.right.isDown) {
             gameState.character.setVelocityX(gameState.speedCharacter);
             gameState.keyArrow = 0;
             clearTimeout(gameState.timeChargeFunction);
-        } else
-        {
+
+            // Send to client 
+           Client.move(false);
+           gameState.isStop = false;
+        } else {
             gameState.character.setVelocityX(0);
+
+            // Send to client 
+            if (!gameState.isStop)  {
+                Client.stop();
+                gameState.isStop = true;
+            }
+
         }
 
         //Shoot Arrow
